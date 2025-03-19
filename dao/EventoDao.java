@@ -20,15 +20,15 @@ public class EventoDao {
 
     public List<Evento> listarTodos() {
         try {
-            List<Participante> lista = new ArrayList<Participante>();
-            String sql = "SELECT * FROM participante";
+            List<Evento> lista = new ArrayList<Evento>();
+            String sql = "SELECT * FROM evento";
             Connection conn = this.sqlConn.connect();
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
-                Participante participante = new Participante(rs.getInt("id"), rs.getString("nome"),
-                        rs.getString("sexo"), rs.getString("email"), rs.getString("celular"));
-                lista.add(participante);
+                Evento evento = new Evento(rs.getInt("id"), rs.getString("titulo"),
+                        rs.getString("local"));
+                lista.add(evento);
             }
             rs.close();
             stm.close();
@@ -36,22 +36,22 @@ public class EventoDao {
             return lista;
         } catch (SQLException e) {
             System.err.println(
-                    "Erro no método listarTodos() da classe ParticipanteDao ao executar SELECT: " + e.getMessage());
+                    "Erro no método listarTodos() da classe EventoDao ao executar SELECT: " + e.getMessage());
             e.printStackTrace();
-            return new ArrayList<Participante>();
+            return new ArrayList<Evento>();
         }
     }
 
-    public List<Participante> listarPorParametro(String nome, String sexo) {
+    public List<Evento> listarPorParametro(String titulo, String local) {
         try {
-            List<Participante> lista = new ArrayList<Participante>();
-            String sql = "SELECT * FROM participante";
+            List<Evento> lista = new ArrayList<Evento>();
+            String sql = "SELECT * FROM evento";
             String sqlWhere = "";
-            if (((nome != null) && (!nome.isEmpty())) || ((sexo != null) && (!sexo.isEmpty()))) {
+            if (((titulo != null) && (!titulo.isEmpty())) || ((local != null) && (!local.isEmpty()))) {
                 sqlWhere = " WHERE";
-                if ((nome != null) && (!nome.isEmpty()))
-                    sqlWhere += " nome LIKE ?";
-                if ((sexo != null) && (!sexo.isEmpty())) {
+                if ((titulo != null) && (!titulo.isEmpty()))
+                    sqlWhere += " titulo LIKE ?";
+                if ((local != null) && (!local.isEmpty())) {
                     if (sqlWhere.equals(""))
                         sqlWhere += " email = ?";
                     else
@@ -61,18 +61,18 @@ public class EventoDao {
             sql += sqlWhere;
             Connection conn = this.sqlConn.connect();
             PreparedStatement pstm = conn.prepareStatement(sql);
-            if ((nome != null) && (!nome.isEmpty()) && (sexo != null) && (!sexo.isEmpty())) {
-                pstm.setString(1, nome);
-                pstm.setString(2, sexo);
-            } else if ((nome != null) && (!nome.isEmpty()))
-                pstm.setString(1, nome);
-            else if ((nome != null) && (!nome.isEmpty()))
-                pstm.setString(1, sexo);
+            if ((titulo != null) && (!titulo.isEmpty()) && (local != null) && (!local.isEmpty())) {
+                pstm.setString(1, titulo);
+                pstm.setString(2, local);
+            } else if ((titulo != null) && (!titulo.isEmpty()))
+                pstm.setString(1, titulo);
+            else if ((titulo != null) && (!titulo.isEmpty()))
+                pstm.setString(1, local);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
-                Participante participante = new Participante(rs.getInt("id"), rs.getString("nome"),
-                        rs.getString("sexo"), rs.getString("email"), rs.getString("celular"));
-                lista.add(participante);
+                Evento evento = new Evento(rs.getInt("id"), rs.getString("titulo"),
+                        rs.getString("local"));
+                lista.add(evento);
             }
             rs.close();
             pstm.close();
@@ -80,101 +80,99 @@ public class EventoDao {
             return lista;
         } catch (SQLException e) {
             System.err.println(
-                    "Erro no método listarPorParametro(String nome, String sexo) da classe ParticipanteDao ao executar SELECT: "
+                    "Erro no método listarPorParametro(String titulo, String local) da classe EventoDao ao executar SELECT: "
                             + e.getMessage());
-            return new ArrayList<Participante>();
+            return new ArrayList<Evento>();
         }
     }
 
-    public Participante buscarPorId(Integer id) {
+    public Evento buscarPorId(Integer id) {
         try {
-            Participante participante = new Participante();
-            String sql = "SELECT * FROM participante where id = ?";
+            Evento evento = new Evento();
+            String sql = "SELECT * FROM evento where id = ?";
             Connection conn = this.sqlConn.connect();
             PreparedStatement pstm = conn.prepareStatement(sql);
             pstm.setInt(1, id);
             ResultSet rs = pstm.executeQuery();
             if (rs.next())
-                participante = new Participante(rs.getInt("id"), rs.getString("nome"),
-                        rs.getString("sexo"), rs.getString("email"), rs.getString("celular"));
+                evento = new Evento(rs.getInt("id"), rs.getString("titulo"),
+                rs.getString("local"));
             rs.close();
             pstm.close();
             this.sqlConn.close(conn);
-            return participante;
+            return evento;
         } catch (SQLException e) {
-            System.err.println("Erro no método buscarPorId(Integer id) da classe ParticipanteDao ao executar SELECT: "
+            System.err.println("Erro no método buscarPorId(Integer id) da classe EventoDao ao executar SELECT: "
                     + e.getMessage());
             e.printStackTrace();
-            return new Participante();
+            return new Evento();
         }
     }
 
-    public Participante buscarPorEmail(String email) {
+    public Evento buscarPorTitulo(String titulo) {
         try {
-            Participante participante = new Participante();
-            String sql = "SELECT * FROM participante where email = ?";
+            Evento evento = new Evento();
+            String sql = "SELECT * FROM evento where titulo = ?";
             Connection conn = this.sqlConn.connect();
             PreparedStatement pstm = conn.prepareStatement(sql);
-            pstm.setString(1, email);
+            pstm.setString(1, titulo);
             ResultSet rs = pstm.executeQuery();
             if (rs.next())
-                participante = new Participante(rs.getInt("id"), rs.getString("nome"),
-                        rs.getString("sexo"), rs.getString("email"), rs.getString("celular"));
+                evento = new Evento(rs.getInt("id"), rs.getString("titulo"),
+                rs.getString("local"));
             rs.close();
             pstm.close();
             this.sqlConn.close(conn);
-            return participante;
+            return evento;
         } catch (SQLException e) {
             System.err.println(
-                    "Erro no método buscarPorEmail(String email) da classe ParticipanteDao ao executar SELECT: "
+                    "Erro no método buscarPorTitulo(String titulo) da classe EventoDao ao executar SELECT: "
                             + e.getMessage());
             e.printStackTrace();
-            return new Participante();
+            return new Evento();
         }
     }
 
-    public Participante buscarPorCelular(String celular) {
+    public Evento buscarPorLocal(String local) {
         try {
-            Participante participante = new Participante();
-            String sql = "SELECT * FROM participante where celular = ?";
+            Evento evento = new Evento();
+            String sql = "SELECT * FROM evento where local = ?";
             Connection conn = this.sqlConn.connect();
             PreparedStatement pstm = conn.prepareStatement(sql);
-            pstm.setString(1, celular);
+            pstm.setString(1, local);
             ResultSet rs = pstm.executeQuery();
             if (rs.next())
-                participante = new Participante(rs.getInt("id"), rs.getString("nome"),
-                        rs.getString("sexo"), rs.getString("email"), rs.getString("celular"));
+                evento = new Evento(rs.getInt("id"), rs.getString("titulo"),
+                rs.getString("local"));
             rs.close();
             pstm.close();
             this.sqlConn.close(conn);
-            return participante;
+            return evento;
         } catch (SQLException e) {
             System.err.println(
-                    "Erro no método buscarPorEmail(String email) da classe ParticipanteDao ao executar SELECT: "
+                    "Erro no método buscarPorLocal(String local) da classe EventoDao ao executar SELECT: "
                             + e.getMessage());
             e.printStackTrace();
-            return new Participante();
+            return new Evento();
         }
     }
 
-    public String inserir(String nome, String sexo, String email, String celular) {
+    public String inserir(String titulo, String local) {
         try {
             Integer id = this.getNewId();
-            String sql = "INSERT INTO participante(id, nome, sexo, email, celular) VALUES(?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO evento(id, titulo, local) VALUES(?, ?, ?)";
             Connection conn = this.sqlConn.connect();
             PreparedStatement pstm = conn.prepareStatement(sql);
             pstm.setInt(1, id);
-            pstm.setString(2, nome);
-            pstm.setString(3, sexo);
-            pstm.setString(4, email);
-            pstm.setString(5, celular);
+            pstm.setString(2, titulo);
+            pstm.setString(3, local);
             System.out.println("Resposta: " + pstm.executeUpdate());
             pstm.close();
             this.sqlConn.close(conn);
             return "sucesso";
         } catch (Exception e) {
             System.err.println(
-                    "Erro no método inserir(String nome, String sexo, String email, String celular) da classe ParticipanteDao ao executar SELECT: "
+                    "Erro no método inserir(String titulo, String local) da classe EventoDao ao executar SELECT: "
                             + e.getMessage());
             e.printStackTrace();
             return "erro";
@@ -184,7 +182,7 @@ public class EventoDao {
     private Integer getNewId() {
         try {
             Integer id = 1;
-            String sql = "SELECT MAX(id) AS max_id FROM participante";
+            String sql = "SELECT MAX(id) AS max_id FROM evento";
             Connection conn = this.sqlConn.connect();
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(sql);
@@ -196,7 +194,7 @@ public class EventoDao {
             return id;
         } catch (Exception e) {
             System.err.println(
-                    "Erro no método getNewId() da classe ParticipanteDao ao executar SELECT: "
+                    "Erro no método getNewId() da classe EventoDao ao executar SELECT: "
                             + e.getMessage());
             e.printStackTrace();
             return -1;
