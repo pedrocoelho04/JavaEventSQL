@@ -6,33 +6,33 @@ import dao.ParticipanteDao;
 import table.Participante;
 
 public class ParticipanteService {
-    private ParticipanteDao dao;
+  private ParticipanteDao dao;
 
-    public ParticipanteService() {
-        this.dao = new ParticipanteDao();
-    }
+  public ParticipanteService() {
+    this.dao = new ParticipanteDao();
+  }
 
-    public List<Participante> listarTodos() {
-        return this.dao.listarTodos();
-    }
+  public List<Participante> listarTodos() {
+    return this.dao.listarTodos();
+  }
 
-    public List<Participante> listarPorParamentro(String nome, String sexo) {
-        return this.dao.listarPorParametro(nome, sexo);
-    }
+  public List<Participante> listarPorParamentro(String nome, String sexo) {
+    return this.dao.listarPorParametro(nome, sexo);
+  }
 
-    public Participante buscarPorId(Integer id) {
-        return this.dao.buscarPorId(id);
-    }
+  public Participante buscarPorId(Integer id) {
+    return this.dao.buscarPorId(id);
+  }
 
-    public Participante buscarPorEmail(String email) {
-        return this.dao.buscarPorEmail(email);
-    }
+  public Participante buscarPorEmail(String email) {
+    return this.dao.buscarPorEmail(email);
+  }
 
-    public Participante buscarPorCelular(String celular) {
-        return this.dao.buscarPorCelular(celular);
-    }
+  public Participante buscarPorCelular(String celular) {
+    return this.dao.buscarPorCelular(celular);
+  }
 
-    public String inserir(String nome, String sexo, String email, String celular) {
-        return this.dao.inserir(nome, sexo, email, celular);
-    }
+  public String inserir(String nome, String sexo, String email, String celular) {
+    return this.dao.inserir(nome, sexo, email, celular);
+  }
 }
