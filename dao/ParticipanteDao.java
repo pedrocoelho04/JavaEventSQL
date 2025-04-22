@@ -27,7 +27,7 @@ public class ParticipanteDao {
       ResultSet rs = stm.executeQuery(sql);
       while (rs.next()) {
         Participante participante = new Participante(rs.getInt("id"), rs.getString("nome"),
-            rs.getString("sexo"), rs.getString("email"), rs.getString("celular"));
+            rs.getString("sexo"), rs.getString("email"), rs.getString("celular"), rs.getString("ePalestrante"));
         lista.add(participante);
       }
       rs.close();
@@ -71,7 +71,7 @@ public class ParticipanteDao {
       ResultSet rs = pstm.executeQuery();
       while (rs.next()) {
         Participante participante = new Participante(rs.getInt("id"), rs.getString("nome"),
-            rs.getString("sexo"), rs.getString("email"), rs.getString("celular"));
+            rs.getString("sexo"), rs.getString("email"), rs.getString("celular"), rs.getString("ePalestrante"));
         lista.add(participante);
       }
       rs.close();
@@ -96,7 +96,7 @@ public class ParticipanteDao {
       ResultSet rs = pstm.executeQuery();
       if (rs.next())
         participante = new Participante(rs.getInt("id"), rs.getString("nome"),
-            rs.getString("sexo"), rs.getString("email"), rs.getString("celular"));
+            rs.getString("sexo"), rs.getString("email"), rs.getString("celular"),rs.getString("ePalestrante"));
       rs.close();
       pstm.close();
       this.sqlConn.close(conn);
@@ -119,7 +119,7 @@ public class ParticipanteDao {
       ResultSet rs = pstm.executeQuery();
       if (rs.next())
         participante = new Participante(rs.getInt("id"), rs.getString("nome"),
-            rs.getString("sexo"), rs.getString("email"), rs.getString("celular"));
+            rs.getString("sexo"), rs.getString("email"), rs.getString("celular"),rs.getString("ePalestrante"));
       rs.close();
       pstm.close();
       this.sqlConn.close(conn);
@@ -143,7 +143,7 @@ public class ParticipanteDao {
       ResultSet rs = pstm.executeQuery();
       if (rs.next())
         participante = new Participante(rs.getInt("id"), rs.getString("nome"),
-            rs.getString("sexo"), rs.getString("email"), rs.getString("celular"));
+            rs.getString("sexo"), rs.getString("email"), rs.getString("celular"),rs.getString("ePalestra"));
       rs.close();
       pstm.close();
       this.sqlConn.close(conn);
@@ -157,10 +157,10 @@ public class ParticipanteDao {
     }
   }
 
-  public String inserir(String nome, String sexo, String email, String celular) {
+  public String inserir(String nome, String sexo, String email, String celular, String ePalestrante) {
     try {
       Integer id = this.getNewId();
-      String sql = "INSERT INTO participante(id, nome, sexo, email, celular) VALUES(?, ?, ?, ?, ?)";
+      String sql = "INSERT INTO participante(id, nome, sexo, email, celular, ePalestrante) VALUES(?, ?, ?, ?, ?, ?)";
       Connection conn = this.sqlConn.connect();
       PreparedStatement pstm = conn.prepareStatement(sql);
       pstm.setInt(1, id);
@@ -168,13 +168,14 @@ public class ParticipanteDao {
       pstm.setString(3, sexo);
       pstm.setString(4, email);
       pstm.setString(5, celular);
+      pstm.setString(6, ePalestrante);
       System.out.println("Resposta: " + pstm.executeUpdate());
       pstm.close();
       this.sqlConn.close(conn);
       return "sucesso";
     } catch (Exception e) {
       System.err.println(
-          "Erro no método inserir(String nome, String sexo, String email, String celular) da classe ParticipanteDao ao executar SELECT: "
+          "Erro no método inserir(String nome, String sexo, String email, String celular, String ePalestrante) da classe ParticipanteDao ao executar SELECT: "
               + e.getMessage());
       e.printStackTrace();
       return "erro";
@@ -200,6 +201,24 @@ public class ParticipanteDao {
               + e.getMessage());
       e.printStackTrace();
       return -1;
+    }
+  }
+  public String excluirPorId(int id){
+    try {
+      String sql = "DELETE FROM participante WHERE id = ?"; 
+      Connection conn = this.sqlConn.connect();
+      PreparedStatement pstm = conn.prepareStatement(sql);
+      pstm.setInt(1, id);
+      System.out.println("Resposta: " + pstm.executeUpdate());
+      pstm.close();
+      this.sqlConn.close(conn);
+      return "sucesso";
+    } catch (Exception e) {
+      System.err.println(
+          "Erro no método excluirPorId(int id) da classe ParticipanteDAO ao executar DELETE: "
+              + e.getMessage());
+      e.printStackTrace();
+      return "erro";
     }
   }
 }

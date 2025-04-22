@@ -18,11 +18,11 @@ public class ConsultaEventosFrame extends JFrame {
     EventoService es = new EventoService();
     List<Evento> eventos = es.listarTodos();
 
-    String[] colunas = { "ID", "Nome", "Data", "Local" };
+    String[] colunas = { "ID", "Nome", "Local" };
     DefaultTableModel tableModel = new DefaultTableModel(colunas, 0);
 
     for (Evento e : eventos) {
-      tableModel.addRow(new Object[] { e.getId(), e.getNome(), e.getData(), e.getLocal() });
+      tableModel.addRow(new Object[] { e.getId(), e.getTitulo(), e.getLocal() });
     }
 
     JTable table = new JTable(tableModel);

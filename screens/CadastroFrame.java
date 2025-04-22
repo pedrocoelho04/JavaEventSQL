@@ -25,6 +25,8 @@ public class CadastroFrame extends JFrame {
     JLabel celularLabel = new JLabel("Celular:");
     JTextField celularField = new JTextField();
 
+    //O checkbox do ePalestrante
+
     JButton salvarButton = new JButton("Salvar");
     salvarButton.addActionListener(new ActionListener() {
       @Override
@@ -32,16 +34,20 @@ public class CadastroFrame extends JFrame {
         String nome = nomeField.getText();
         String email = emailField.getText();
         String celular = celularField.getText();
+        //String ePalestrante = ePalestranteField.getText();
 
         ParticipanteService ps = new ParticipanteService();
-        boolean sucesso = ps.inserir(nome, email, celular);
+        // ADICIONAR O CAMPO EPALESTRANTE no ps.inserir(nome, email, celular, ePalestrante), ELE DEVE SOMENTE RETORNAR 'S' SE ESTIVER MARCADO E 'N' PARA CASO NÃO ESTEJA MARCADO. 
+        //boolean sucesso = ps.inserir(nome, email, celular);
 
+        /*
         if (sucesso) {
           JOptionPane.showMessageDialog(null, "Participante cadastrado com sucesso!");
           dispose();
         } else {
           JOptionPane.showMessageDialog(null, "Erro ao cadastrar participante.");
         }
+        */
       }
     });
 

@@ -6,16 +6,18 @@ public class Participante {
   private String sexo;
   private String email;
   private String celular;
+  private String ePalestrante;
 
   public Participante() {
   }
 
-  public Participante(Integer id, String nome, String sexo, String email, String celular) {
+  public Participante(Integer id, String nome, String sexo, String email, String celular, String ePalestrante) {
     this.id = id;
     this.nome = nome;
     this.sexo = sexo;
     this.email = email;
     this.celular = celular;
+    this.ePalestrante = ePalestrante;
   }
 
   public Integer getId() {
@@ -56,5 +58,13 @@ public class Participante {
 
   public void setCelular(String celular) {
     this.celular = celular;
+  }
+
+  public String getePalestrante() {
+    return ePalestrante;
+  }
+
+  public void setePalestrante(String ePalestrante) {
+    this.ePalestrante = ePalestrante;
   }
 }

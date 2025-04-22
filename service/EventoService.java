@@ -35,4 +35,8 @@ public class EventoService {
   public String inserir(String titulo, String local) {
     return this.dao.inserir(titulo, local);
   }
+
+  public String excluirPorId(int id) {
+    return this.dao.excluirPorId(id);
+  }
 }

@@ -200,4 +200,23 @@ public class EventoDao {
       return -1;
     }
   }
+
+  public String excluirPorId(int id){
+    try {
+      String sql = "DELETE FROM evento WHERE id = ?"; 
+      Connection conn = this.sqlConn.connect();
+      PreparedStatement pstm = conn.prepareStatement(sql);
+      pstm.setInt(1, id);
+      System.out.println("Resposta: " + pstm.executeUpdate());
+      pstm.close();
+      this.sqlConn.close(conn);
+      return "sucesso";
+    } catch (Exception e) {
+      System.err.println(
+          "Erro no método excluirPorId(int id) da classe EventoDao ao executar DELETE: "
+              + e.getMessage());
+      e.printStackTrace();
+      return "erro";
+    }
+  }
 }
