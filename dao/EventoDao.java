@@ -35,8 +35,7 @@ public class EventoDao {
       this.sqlConn.close(conn);
       return lista;
     } catch (SQLException e) {
-      System.err.println(
-          "Erro no método listarTodos() da classe EventoDao ao executar SELECT: " + e.getMessage());
+      System.err.println("Erro no método listarTodos() da classe EventoDao ao executar SELECT: " + e.getMessage());
       e.printStackTrace();
       return new ArrayList<Evento>();
     }
@@ -79,9 +78,7 @@ public class EventoDao {
       this.sqlConn.close(conn);
       return lista;
     } catch (SQLException e) {
-      System.err.println(
-          "Erro no método listarPorParametro(String titulo, String local) da classe EventoDao ao executar SELECT: "
-              + e.getMessage());
+      System.err.println("Erro no método listarPorParametro(String titulo, String local) da classe EventoDao ao executar SELECT: " + e.getMessage());
       return new ArrayList<Evento>();
     }
   }
@@ -125,9 +122,7 @@ public class EventoDao {
       this.sqlConn.close(conn);
       return evento;
     } catch (SQLException e) {
-      System.err.println(
-          "Erro no método buscarPorTitulo(String titulo) da classe EventoDao ao executar SELECT: "
-              + e.getMessage());
+      System.err.println("Erro no método buscarPorTitulo(String titulo) da classe EventoDao ao executar SELECT: " + e.getMessage());
       e.printStackTrace();
       return new Evento();
     }
@@ -149,9 +144,7 @@ public class EventoDao {
       this.sqlConn.close(conn);
       return evento;
     } catch (SQLException e) {
-      System.err.println(
-          "Erro no método buscarPorLocal(String local) da classe EventoDao ao executar SELECT: "
-              + e.getMessage());
+      System.err.println("Erro no método buscarPorLocal(String local) da classe EventoDao ao executar SELECT: " + e.getMessage());
       e.printStackTrace();
       return new Evento();
     }
@@ -171,9 +164,7 @@ public class EventoDao {
       this.sqlConn.close(conn);
       return "sucesso";
     } catch (Exception e) {
-      System.err.println(
-          "Erro no método inserir(String titulo, String local) da classe EventoDao ao executar SELECT: "
-              + e.getMessage());
+      System.err.println("Erro no método inserir(String titulo, String local) da classe EventoDao ao executar SELECT: " + e.getMessage());
       e.printStackTrace();
       return "erro";
     }
@@ -193,17 +184,15 @@ public class EventoDao {
       this.sqlConn.close(conn);
       return id;
     } catch (Exception e) {
-      System.err.println(
-          "Erro no método getNewId() da classe EventoDao ao executar SELECT: "
-              + e.getMessage());
+      System.err.println("Erro no método getNewId() da classe EventoDao ao executar SELECT: " + e.getMessage());
       e.printStackTrace();
       return -1;
     }
   }
 
-  public String excluirPorId(int id){
+  public String excluirPorId(int id) {
     try {
-      String sql = "DELETE FROM evento WHERE id = ?"; 
+      String sql = "DELETE FROM evento WHERE id = ?";
       Connection conn = this.sqlConn.connect();
       PreparedStatement pstm = conn.prepareStatement(sql);
       pstm.setInt(1, id);
@@ -212,9 +201,7 @@ public class EventoDao {
       this.sqlConn.close(conn);
       return "sucesso";
     } catch (Exception e) {
-      System.err.println(
-          "Erro no método excluirPorId(int id) da classe EventoDao ao executar DELETE: "
-              + e.getMessage());
+      System.err.println("Erro no método excluirPorId(int id) da classe EventoDao ao executar DELETE: " + e.getMessage());
       e.printStackTrace();
       return "erro";
     }

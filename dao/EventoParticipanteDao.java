@@ -167,9 +167,7 @@ public class EventoParticipanteDao {
       this.sqlConn.close(conn);
       return "sucesso";
     } catch (Exception e) {
-      System.err.println(
-          "Erro no método inserir(Integer id_evento, Integer id_participante) da classe EventoParticipanteDao ao executar SELECT: "
-              + e.getMessage());
+      System.err.println("Erro no método inserir(Integer id_evento, Integer id_participante) da classe EventoParticipanteDao ao executar SELECT: " + e.getMessage());
       e.printStackTrace();
       return "erro";
     }
@@ -189,9 +187,7 @@ public class EventoParticipanteDao {
       this.sqlConn.close(conn);
       return id;
     } catch (Exception e) {
-      System.err.println(
-          "Erro no método getNewId() da classe EventoParticipanteDao ao executar SELECT: "
-              + e.getMessage());
+      System.err.println("Erro no método getNewId() da classe EventoParticipanteDao ao executar SELECT: " + e.getMessage());
       e.printStackTrace();
       return -1;
     }
@@ -207,9 +203,7 @@ public class EventoParticipanteDao {
       this.sqlConn.close(conn);
       return "sucesso";
     } catch (Exception e) {
-      System.err.println(
-          "Erro no método excluirPorId(int id) da classe EventoParticipanteDAO ao executar DELETE: "
-              + e.getMessage());
+      System.err.println("Erro no método excluirPorId(int id) da classe EventoParticipanteDAO ao executar DELETE: " + e.getMessage());
       e.printStackTrace();
       return "erro";
     }

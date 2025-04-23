@@ -35,8 +35,7 @@ public class ParticipanteDao {
       this.sqlConn.close(conn);
       return lista;
     } catch (SQLException e) {
-      System.err.println(
-          "Erro no método listarTodos() da classe ParticipanteDao ao executar SELECT: " + e.getMessage());
+      System.err.println("Erro no método listarTodos() da classe ParticipanteDao ao executar SELECT: " + e.getMessage());
       e.printStackTrace();
       return new ArrayList<Participante>();
     }
@@ -79,9 +78,7 @@ public class ParticipanteDao {
       this.sqlConn.close(conn);
       return lista;
     } catch (SQLException e) {
-      System.err.println(
-          "Erro no método listarPorParametro(String nome, String sexo) da classe ParticipanteDao ao executar SELECT: "
-              + e.getMessage());
+      System.err.println("Erro no método listarPorParametro(String nome, String sexo) da classe ParticipanteDao ao executar SELECT: " + e.getMessage());
       return new ArrayList<Participante>();
     }
   }
@@ -102,8 +99,7 @@ public class ParticipanteDao {
       this.sqlConn.close(conn);
       return participante;
     } catch (SQLException e) {
-      System.err.println("Erro no método buscarPorId(Integer id) da classe ParticipanteDao ao executar SELECT: "
-          + e.getMessage());
+      System.err.println("Erro no método buscarPorId(Integer id) da classe ParticipanteDao ao executar SELECT: " + e.getMessage());
       e.printStackTrace();
       return new Participante();
     }
@@ -125,9 +121,7 @@ public class ParticipanteDao {
       this.sqlConn.close(conn);
       return participante;
     } catch (SQLException e) {
-      System.err.println(
-          "Erro no método buscarPorEmail(String email) da classe ParticipanteDao ao executar SELECT: "
-              + e.getMessage());
+      System.err.println("Erro no método buscarPorEmail(String email) da classe ParticipanteDao ao executar SELECT: " + e.getMessage());
       e.printStackTrace();
       return new Participante();
     }
@@ -149,9 +143,7 @@ public class ParticipanteDao {
       this.sqlConn.close(conn);
       return participante;
     } catch (SQLException e) {
-      System.err.println(
-          "Erro no método buscarPorEmail(String email) da classe ParticipanteDao ao executar SELECT: "
-              + e.getMessage());
+      System.err.println("Erro no método buscarPorEmail(String email) da classe ParticipanteDao ao executar SELECT: " + e.getMessage());
       e.printStackTrace();
       return new Participante();
     }
@@ -174,9 +166,7 @@ public class ParticipanteDao {
       this.sqlConn.close(conn);
       return "sucesso";
     } catch (Exception e) {
-      System.err.println(
-          "Erro no método inserir(String nome, String sexo, String email, String celular, String ePalestrante) da classe ParticipanteDao ao executar SELECT: "
-              + e.getMessage());
+      System.err.println("Erro no método inserir(String nome, String sexo, String email, String celular, String ePalestrante) da classe ParticipanteDao ao executar SELECT: " + e.getMessage());
       e.printStackTrace();
       return "erro";
     }
@@ -196,9 +186,7 @@ public class ParticipanteDao {
       this.sqlConn.close(conn);
       return id;
     } catch (Exception e) {
-      System.err.println(
-          "Erro no método getNewId() da classe ParticipanteDao ao executar SELECT: "
-              + e.getMessage());
+      System.err.println("Erro no método getNewId() da classe ParticipanteDao ao executar SELECT: " + e.getMessage());
       e.printStackTrace();
       return -1;
     }
@@ -214,9 +202,7 @@ public class ParticipanteDao {
       this.sqlConn.close(conn);
       return "sucesso";
     } catch (Exception e) {
-      System.err.println(
-          "Erro no método excluirPorId(int id) da classe ParticipanteDAO ao executar DELETE: "
-              + e.getMessage());
+      System.err.println("Erro no método excluirPorId(int id) da classe ParticipanteDAO ao executar DELETE: " + e.getMessage());
       e.printStackTrace();
       return "erro";
     }
