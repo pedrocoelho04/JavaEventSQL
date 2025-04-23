@@ -32,8 +32,8 @@ public class EventoService {
     return this.dao.buscarPorTitulo(titulo);
   }
 
-  public String inserir(String titulo, String local) {
-    return this.dao.inserir(titulo, local);
+  public String inserir(String titulo, String local, String data, String detalhes) {
+    return this.dao.inserir(titulo, local, data, detalhes);
   }
 
   public String excluirPorId(int id) {

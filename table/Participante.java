@@ -7,17 +7,24 @@ public class Participante {
   private String email;
   private String celular;
   private String ePalestrante;
+  private String curriculo;
+  private String areaAtuacao;
+  private String evento;
 
   public Participante() {
   }
 
-  public Participante(Integer id, String nome, String sexo, String email, String celular, String ePalestrante) {
+  public Participante(Integer id, String nome, String sexo, String email, String celular, String ePalestrante,
+                      String curriculo, String areaAtuacao, String evento) {
     this.id = id;
     this.nome = nome;
     this.sexo = sexo;
     this.email = email;
     this.celular = celular;
     this.ePalestrante = ePalestrante;
+    this.curriculo = curriculo;
+    this.areaAtuacao = areaAtuacao;
+    this.evento = evento;
   }
 
   public Integer getId() {
@@ -66,5 +73,29 @@ public class Participante {
 
   public void setePalestrante(String ePalestrante) {
     this.ePalestrante = ePalestrante;
+  }
+
+  public String getCurriculo() {
+    return curriculo;
+  }
+
+  public void setCurriculo(String curriculo) {
+    this.curriculo = curriculo;
+  }
+
+  public String getAreaAtuacao() {
+    return areaAtuacao;
+  }
+
+  public void setAreaAtuacao(String areaAtuacao) {
+    this.areaAtuacao = areaAtuacao;
+  }
+
+  public String getEvento() {
+    return evento;
+  }
+
+  public void setEvento(String evento) {
+    this.evento = evento;
   }
 }

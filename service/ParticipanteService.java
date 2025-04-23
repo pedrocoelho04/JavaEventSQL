@@ -32,8 +32,9 @@ public class ParticipanteService {
     return this.dao.buscarPorCelular(celular);
   }
 
-  public String inserir(String nome, String sexo, String email, String celular, String ePalestrante) {
-    return this.dao.inserir(nome, sexo, email, celular, ePalestrante);
+  public String inserir(String nome, String sexo, String email, String celular, String ePalestrante,
+                        String curriculo, String areaAtuacao, String evento) {
+    return this.dao.inserir(nome, sexo, email, celular, ePalestrante, curriculo, areaAtuacao, evento);
   }
 
   public String excluirPorId(int id) {

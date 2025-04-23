@@ -6,7 +6,7 @@ import java.awt.*;
 public class HomeFrame extends JFrame {
   public HomeFrame() {
     setTitle("Sistema de Gerenciamento de Eventos");
-    setSize(500, 350);
+    setSize(600, 350);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLocationRelativeTo(null);
     setLayout(new BorderLayout(10, 10));
@@ -19,10 +19,10 @@ public class HomeFrame extends JFrame {
     mainPanel.setLayout(new GridLayout(2, 2, 15, 15));
     mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
 
-    JButton btnConsultaParticipantes = new JButton("Consultar Participantes");
+    JButton btnConsultaParticipantes = new JButton("Consultar Participantes/Palestrante");
     btnConsultaParticipantes.addActionListener(e -> new ConsultaFrame());
 
-    JButton btnCadastroParticipantes = new JButton("Cadastrar Participante");
+    JButton btnCadastroParticipantes = new JButton("Cadastrar Participante/Palestrante");
     btnCadastroParticipantes.addActionListener(e -> new CadastroFrame());
 
     JButton btnConsultaEventos = new JButton("Consultar Eventos");
