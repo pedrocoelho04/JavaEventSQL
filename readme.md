@@ -42,6 +42,8 @@ Tela para visualizar e consultar os participantes cadastrados.
 Formulário para cadastro de eventos. Campos:
 - Título
 - Local
+- DataEvento
+- Detalhes
 
 ---
 
