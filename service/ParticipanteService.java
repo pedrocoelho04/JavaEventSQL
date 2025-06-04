@@ -32,9 +32,13 @@ public class ParticipanteService {
     return this.dao.buscarPorCelular(celular);
   }
 
-  public String inserir(String nome, String sexo, String email, String celular, String ePalestrante,
-                        String curriculo, String areaAtuacao, String evento) {
-    return this.dao.inserir(nome, sexo, email, celular, ePalestrante, curriculo, areaAtuacao, evento);
+  public String inserir(String nome, String sexo, String email, String celular, String ePalestrante, String curriculo, String areaAtuacao) {
+    return this.dao.inserir(nome, sexo, email, celular, ePalestrante, curriculo, areaAtuacao);
+  }
+
+  public String atualizarPorId(int id, String nome, String sexo, String email, String celular, String ePalestrante,
+  String curriculo, String areaAtuacao) {
+    return this.dao.atualizarPorId(id, nome, sexo, email, celular, ePalestrante, curriculo, areaAtuacao);
   }
 
   public String excluirPorId(int id) {

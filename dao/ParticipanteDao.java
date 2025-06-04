@@ -34,8 +34,7 @@ public class ParticipanteDao {
           rs.getString("celular"),
           rs.getString("ePalestrante"),
           rs.getString("curriculo"),
-          rs.getString("areaAtuacao"),
-          rs.getString("evento")
+          rs.getString("areaAtuacao")
         );
         lista.add(participante);
       }
@@ -86,8 +85,7 @@ public class ParticipanteDao {
           rs.getString("celular"),
           rs.getString("ePalestrante"),
           rs.getString("curriculo"),
-          rs.getString("areaAtuacao"),
-          rs.getString("evento")
+          rs.getString("areaAtuacao")
         );
         lista.add(participante);
       }
@@ -118,8 +116,7 @@ public class ParticipanteDao {
           rs.getString("celular"),
           rs.getString("ePalestrante"),
           rs.getString("curriculo"),
-          rs.getString("areaAtuacao"),
-          rs.getString("evento")
+          rs.getString("areaAtuacao")
         );
       }
       rs.close();
@@ -150,8 +147,7 @@ public class ParticipanteDao {
           rs.getString("celular"),
           rs.getString("ePalestrante"),
           rs.getString("curriculo"),
-          rs.getString("areaAtuacao"),
-          rs.getString("evento")
+          rs.getString("areaAtuacao")
         );
       }
       rs.close();
@@ -182,8 +178,7 @@ public class ParticipanteDao {
           rs.getString("celular"),
           rs.getString("ePalestrante"),
           rs.getString("curriculo"),
-          rs.getString("areaAtuacao"),
-          rs.getString("evento")
+          rs.getString("areaAtuacao")
         );
       }
       rs.close();
@@ -197,10 +192,10 @@ public class ParticipanteDao {
     }
   }
 
-  public String inserir(String nome, String sexo, String email, String celular, String ePalestrante, String curriculo, String areaAtuacao, String evento) {
+  public String inserir(String nome, String sexo, String email, String celular, String ePalestrante, String curriculo, String areaAtuacao) {
     try {
       Integer id = this.getNewId();
-      String sql = "INSERT INTO participante(id, nome, sexo, email, celular, ePalestrante, curriculo, areaAtuacao, evento) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      String sql = "INSERT INTO participante(id, nome, sexo, email, celular, ePalestrante, curriculo, areaAtuacao) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
       Connection conn = this.sqlConn.connect();
       PreparedStatement pstm = conn.prepareStatement(sql);
       pstm.setInt(1, id);
@@ -211,7 +206,6 @@ public class ParticipanteDao {
       pstm.setString(6, ePalestrante);
       pstm.setString(7, curriculo);
       pstm.setString(8, areaAtuacao);
-      pstm.setString(9, evento);
       System.out.println("Resposta: " + pstm.executeUpdate());
       pstm.close();
       this.sqlConn.close(conn);
@@ -260,22 +254,22 @@ public class ParticipanteDao {
     }
   }
 
-  public String atualizar(Participante participante) {
+  public String atualizarPorId(int id, String nome, String sexo, String email, String celular, String ePalestrante,
+  String curriculo, String areaAtuacao) {
     try {
-        String sql = "UPDATE participante SET nome = ?, sexo = ?, email = ?, celular = ?, ePalestrante = ?, curriculo = ?, areaAtuacao = ?, evento = ? WHERE id = ?";
+        String sql = "UPDATE participante SET nome = ?, sexo = ?, email = ?, celular = ?, ePalestrante = ?, curriculo = ?, areaAtuacao = ? WHERE id = ?";
         Connection conn = this.sqlConn.connect();
         PreparedStatement pstm = conn.prepareStatement(sql);
         
         // Setando os valores do participante nos parâmetros da query
-        pstm.setString(1, participante.getNome());
-        pstm.setString(2, participante.getSexo());
-        pstm.setString(3, participante.getEmail());
-        pstm.setString(4, participante.getCelular());
-        pstm.setString(5, participante.getePalestrante());
-        pstm.setString(6, participante.getCurriculo());
-        pstm.setString(7, participante.getAreaAtuacao());
-        pstm.setString(8, participante.getEvento());
-        pstm.setInt(9, participante.getId());
+        pstm.setString(1, nome);
+        pstm.setString(2, sexo);
+        pstm.setString(3, email);
+        pstm.setString(4, celular);
+        pstm.setString(5, ePalestrante);
+        pstm.setString(6, curriculo);
+        pstm.setString(7, areaAtuacao);
+        pstm.setInt(9, id);
         
         // Executa o update e retorna a resposta
         int resultado = pstm.executeUpdate();
@@ -289,7 +283,7 @@ public class ParticipanteDao {
             return "erro";
         }
     } catch (SQLException e) {
-        System.err.println("Erro no método atualizar() da classe ParticipanteDao ao executar UPDATE: " + e.getMessage());
+        System.err.println("Erro no método atualizarPorId() da classe ParticipanteDao ao executar UPDATE: " + e.getMessage());
         e.printStackTrace();
         return "erro";
     }

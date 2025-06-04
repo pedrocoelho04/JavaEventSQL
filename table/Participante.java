@@ -9,13 +9,12 @@ public class Participante {
   private String ePalestrante;
   private String curriculo;
   private String areaAtuacao;
-  private String evento;
 
   public Participante() {
   }
 
   public Participante(Integer id, String nome, String sexo, String email, String celular, String ePalestrante,
-                      String curriculo, String areaAtuacao, String evento) {
+                      String curriculo, String areaAtuacao) {
     this.id = id;
     this.nome = nome;
     this.sexo = sexo;
@@ -24,7 +23,6 @@ public class Participante {
     this.ePalestrante = ePalestrante;
     this.curriculo = curriculo;
     this.areaAtuacao = areaAtuacao;
-    this.evento = evento;
   }
 
   public Integer getId() {
@@ -89,13 +87,5 @@ public class Participante {
 
   public void setAreaAtuacao(String areaAtuacao) {
     this.areaAtuacao = areaAtuacao;
-  }
-
-  public String getEvento() {
-    return evento;
-  }
-
-  public void setEvento(String evento) {
-    this.evento = evento;
   }
 }
