@@ -42,6 +42,8 @@ Tela para visualizar e consultar os participantes cadastrados.
 Formulário para cadastro de eventos. Campos:
 - Título
 - Local
+- DataEvento
+- Detalhes
 
 ---
 
@@ -60,7 +62,9 @@ Tela para visualizar e consultar eventos cadastrados.
   - `evento` (id, titulo, local)
 
 ---
-
+## 📺 Apresentação
+- [Slide de apresentação](https://www.canva.com/design/DAGmJuozI_E/Q9yAGJSLwwTNtMrLV7lahg/view?utm_content=DAGmJuozI_E&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hbab1ada0e1)
+---
 ## 🧑‍💻 Contribuidores
 
 - [@Dspofu](https://github.com/Dspofu)
