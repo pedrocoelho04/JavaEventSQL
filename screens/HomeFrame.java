@@ -11,9 +11,9 @@ public class HomeFrame extends JFrame {
     private static final Color COR_FUNDO_PRINCIPAL = new Color(238, 238, 238); // Um cinza bem claro
     private static final Color COR_PAINEL_BOTOES = new Color(250, 250, 250); // Quase branco
     private static final Color COR_TITULO = new Color(60, 70, 90); // Um azul escuro/cinza
-    private static final Color COR_BOTAO_FUNDO = new Color(0, 120, 215); // Azul Microsoft
-    private static final Color COR_BOTAO_FUNDO_HOVER = new Color(0, 100, 195); // Azul um pouco mais escuro
-    private static final Color COR_BOTAO_TEXTO = Color.WHITE;
+    private static final Color COR_BOTAO_FUNDO = new Color(122, 122, 122); // Azul Microsoft
+    private static final Color COR_BOTAO_FUNDO_HOVER = new Color(90, 90, 90); // Azul um pouco mais escuro
+    private static final Color COR_BOTAO_TEXTO = Color.BLACK;
     private static final Color COR_RODAPE = new Color(100, 100, 100); // Cinza para o rodapé
 
     // Definição de Fontes
