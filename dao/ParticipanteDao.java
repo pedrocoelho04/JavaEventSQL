@@ -269,7 +269,7 @@ public class ParticipanteDao {
         pstm.setString(5, ePalestrante);
         pstm.setString(6, curriculo);
         pstm.setString(7, areaAtuacao);
-        pstm.setInt(9, id);
+        pstm.setInt(8, id);
         
         // Executa o update e retorna a resposta
         int resultado = pstm.executeUpdate();

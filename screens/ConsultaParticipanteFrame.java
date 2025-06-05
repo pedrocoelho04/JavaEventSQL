@@ -5,7 +5,6 @@ import table.Participante;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.List;
 
 public class ConsultaParticipanteFrame extends JFrame {

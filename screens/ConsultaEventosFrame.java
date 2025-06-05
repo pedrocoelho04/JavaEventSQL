@@ -2,11 +2,6 @@ package screens;
 
 import dao.EventoDao;
 import table.Evento;
-// Removidos imports não utilizados diretamente nesta classe para esta funcionalidade
-// import dao.ParticipanteDao;
-// import table.Participante;
-// import dao.EventoParticipanteDao;
-// import table.EventoParticipante;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,32 +11,37 @@ import java.util.List;
 public class ConsultaEventosFrame extends JFrame {
     private JTable tabela;
     private EventoDao dao = new EventoDao();
-    private List<Evento> eventos;
+    private List<Evento> eventos; // Mantém a lista de eventos para fácil acesso
 
     public ConsultaEventosFrame() {
         setTitle("Consulta de Eventos");
         setSize(800, 400);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Melhor que EXIT_ON_CLOSE se houver outras janelas
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        atualizarTabela(); // Inicializa a tabela
+        atualizarTabelaView(); // Renomeado para consistência e para inicializar
 
-        JButton btnExcluir = new JButton("Excluir Evento Selecionado");
+        JButton btnExcluir = new JButton("Excluir Evento");
         btnExcluir.addActionListener(e -> excluirEvento());
 
-        JButton btnSalvarAlteracoes = new JButton("Salvar Alterações");
-        btnSalvarAlteracoes.addActionListener(e -> salvarAlteracoes());
+        JButton btnEditar = new JButton("Editar Evento"); // NOVO BOTÃO
+        btnEditar.addActionListener(e -> abrirJanelaEdicao());
 
-        JButton btnVerParticipantes = new JButton("Ver Participantes do Evento");
+        // O botão "Salvar Alterações" (para edição na tabela) pode ser mantido ou removido
+        // se a edição for exclusivamente pela nova tela. Vou mantê-lo por enquanto.
+        JButton btnSalvarAlteracoesTabela = new JButton("Salvar Edição na Tabela");
+        btnSalvarAlteracoesTabela.addActionListener(e -> salvarAlteracoesNaTabela());
+
+        JButton btnVerParticipantes = new JButton("Ver Participantes");
         btnVerParticipantes.addActionListener(e -> abrirJanelaParticipantes());
 
-        JPanel buttonPanel = new JPanel(); // FlowLayout por padrão
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(btnEditar); // Adiciona o botão de editar
         buttonPanel.add(btnExcluir);
-        buttonPanel.add(btnSalvarAlteracoes);
-        buttonPanel.add(btnVerParticipantes); // Adiciona o novo botão
+        buttonPanel.add(btnSalvarAlteracoesTabela);
+        buttonPanel.add(btnVerParticipantes);
 
-        // Garante que a tabela seja adicionada ao JScrollPane após ser inicializada
         JScrollPane scrollPane = new JScrollPane(tabela);
         add(scrollPane, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
@@ -49,67 +49,106 @@ public class ConsultaEventosFrame extends JFrame {
         setVisible(true);
     }
 
-    private void atualizarTabela() {
-        eventos = dao.listarTodos();
+    // Renomeei 'atualizarTabela' para 'atualizarTabelaView' para clareza
+    // e para diferenciá-lo do método de DAO, caso houvesse.
+    // Este método agora também lida com a criação inicial da tabela.
+    public void atualizarTabelaView() {
+        eventos = dao.listarTodos(); // Atualiza a lista de eventos local
         String[] colunas = { "ID", "Título", "Local", "Data", "Detalhes" };
-        String[][] dados = new String[eventos.size()][5];
+        Object[][] dados = new Object[eventos.size()][5]; // Usar Object[][] para JTable
 
         for (int i = 0; i < eventos.size(); i++) {
             Evento e = eventos.get(i);
-            dados[i][0] = String.valueOf(e.getId());
+            dados[i][0] = e.getId(); // ID como Integer é melhor para JTable
             dados[i][1] = e.getTitulo();
             dados[i][2] = e.getLocal();
             dados[i][3] = e.getData();
             dados[i][4] = e.getDetalhes();
         }
 
-        if (tabela == null) { // Cria a tabela apenas uma vez
-            tabela = new JTable(dados, colunas);
-            tabela.setCellSelectionEnabled(true);
+        if (tabela == null) {
+            // Criar um DefaultTableModel para que a tabela não seja editável por padrão
+            // A menos que você queira permitir edição direta E por formulário
+            javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(dados, colunas) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    // Permite edição apenas se você quiser manter a funcionalidade de edição na tabela.
+                    // Se a edição for exclusivamente pelo formulário, retorne false.
+                    // Por agora, vamos manter a edição na tabela conforme o código original.
+                    return true; // ou return false; para desabilitar edição na tabela
+                }
+            };
+            tabela = new JTable(model);
+            tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             tabela.setFillsViewportHeight(true);
-            tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Importante para pegar um único evento
+            // Removido setCellSelectionEnabled(true) pois o DefaultTableModel já lida com isso
+            // e o isCellEditable controla a edição.
 
             tabela.addKeyListener(new KeyAdapter() {
                 @Override
                 public void keyReleased(KeyEvent e) {
                     if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                        // Verificar se uma célula está em edição antes de salvar
                         if (tabela.isEditing()) {
                             tabela.getCellEditor().stopCellEditing();
                         }
-                        salvarAlteracoes();
+                        // Se a edição for só por formulário, este listener pode ser removido ou adaptado
+                        salvarAlteracoesNaTabela();
                     }
                 }
             });
-        } else { // Apenas atualiza o modelo da tabela se ela já existir
-            ((javax.swing.table.DefaultTableModel) tabela.getModel()).setDataVector(dados, colunas);
+             // Adicionar listener para duplo clique para editar (opcional)
+            tabela.addMouseListener(new MouseAdapter() {
+                public void mousePressed(MouseEvent mouseEvent) {
+                    if (mouseEvent.getClickCount() == 2 && tabela.getSelectedRow() != -1) {
+                        abrirJanelaEdicao();
+                    }
+                }
+            });
+
+        } else {
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tabela.getModel();
+            model.setDataVector(dados, colunas);
         }
 
-        // Se o JScrollPane já existe, apenas atualiza a view.
-        // Se não, ele será criado e adicionado no construtor.
-        // Esta parte é importante se atualizarTabela for chamada após a construção inicial.
         Component centerComponent = ((BorderLayout)getContentPane().getLayout()).getLayoutComponent(BorderLayout.CENTER);
         if (centerComponent instanceof JScrollPane) {
             ((JScrollPane) centerComponent).setViewportView(tabela);
+        } else if (tabela != null) { // Caso inicial onde o JScrollPane pode não estar no layout ainda
+            // Esta lógica pode ser simplificada se o JScrollPane for criado uma vez no construtor
         }
     }
 
+    private void abrirJanelaEdicao() {
+        int linhaSelecionada = tabela.getSelectedRow();
+        if (linhaSelecionada >= 0) {
+            // Obter o objeto Evento da lista 'eventos' usando o índice da linha
+            // Isso é mais seguro do que reconstruir o objeto a partir dos valores da tabela,
+            // especialmente se o ID não for estritamente numérico ou se houver conversões.
+            Evento eventoSelecionado = eventos.get(tabela.convertRowIndexToModel(linhaSelecionada)); // Usa a lista local
+            
+            // Passa 'this' para que CadastroEventoFrame possa chamar atualizarTabelaView()
+            new CadastroEventoFrame(eventoSelecionado, this);
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, selecione um evento na tabela para editar.", "Nenhum Evento Selecionado", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
 
     private void excluirEvento() {
-        int linha = tabela.getSelectedRow();
-        if (linha >= 0) {
+        int linhaSelecionada = tabela.getSelectedRow();
+        if (linhaSelecionada >= 0) {
             int confirm = JOptionPane.showConfirmDialog(this,
                     "Tem certeza que deseja excluir o evento selecionado?",
                     "Confirmação de Exclusão",
                     JOptionPane.YES_NO_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
-                int id = Integer.parseInt((String) tabela.getValueAt(linha, 0));
+                // Obter o ID do objeto Evento, não da String na tabela diretamente, para mais segurança
+                Evento eventoParaExcluir = eventos.get(tabela.convertRowIndexToModel(linhaSelecionada));
+                int id = eventoParaExcluir.getId();
                 String resultado = dao.excluirPorId(id);
 
                 if (resultado.equals("sucesso")) {
                     JOptionPane.showMessageDialog(this, "Evento excluído com sucesso.");
-                    // Não recriar a frame, apenas atualizar a tabela
                     atualizarTabelaView();
                 } else {
                     JOptionPane.showMessageDialog(this, "Erro ao excluir o evento: " + resultado);
@@ -120,83 +159,58 @@ public class ConsultaEventosFrame extends JFrame {
         }
     }
 
-    private void salvarAlteracoes() {
-        int linha = tabela.getSelectedRow();
-        // Se uma célula estiver sendo editada, tenta parar a edição para pegar o valor atualizado
+    // Renomeado para clareza, já que agora existe uma tela de edição dedicada
+    private void salvarAlteracoesNaTabela() {
+        int linhaSelecionada = tabela.getSelectedRow();
         if (tabela.isEditing()) {
             tabela.getCellEditor().stopCellEditing();
         }
 
-        if (linha >= 0) {
+        if (linhaSelecionada >= 0) {
             try {
-                // Re-ler os valores da tabela, pois podem ter sido editados
-                int id = Integer.parseInt(tabela.getModel().getValueAt(linha, 0).toString());
-                String titulo = tabela.getModel().getValueAt(linha, 1).toString();
-                String local = tabela.getModel().getValueAt(linha, 2).toString();
-                String data = tabela.getModel().getValueAt(linha, 3).toString();
-                String detalhes = tabela.getModel().getValueAt(linha, 4).toString();
-
+                // É importante obter os dados do MODELO da tabela, não da lista 'eventos' diretamente aqui,
+                // pois o usuário pode ter editado na célula.
+                int id = (Integer) tabela.getModel().getValueAt(tabela.convertRowIndexToModel(linhaSelecionada), 0); // Assumindo que ID é Integer
+                String titulo = tabela.getModel().getValueAt(tabela.convertRowIndexToModel(linhaSelecionada), 1).toString();
+                String local = tabela.getModel().getValueAt(tabela.convertRowIndexToModel(linhaSelecionada), 2).toString();
+                String data = tabela.getModel().getValueAt(tabela.convertRowIndexToModel(linhaSelecionada), 3).toString();
+                String detalhes = tabela.getModel().getValueAt(tabela.convertRowIndexToModel(linhaSelecionada), 4).toString();
 
                 Evento evento = new Evento(id, titulo, local, data, detalhes);
                 String resultado = dao.atualizar(evento);
 
                 if (resultado.equals("sucesso")) {
-                    JOptionPane.showMessageDialog(this, "Evento atualizado com sucesso.");
-                    eventos.set(linha, evento); // Atualiza a lista local também
-                    // A tabela já reflete a edição, mas uma recarga pode ser necessária
-                    // se a ordem ou o número de itens mudar. Neste caso, não.
-                    // ((javax.swing.table.DefaultTableModel) tabela.getModel()).fireTableRowsUpdated(linha, linha);
+                    JOptionPane.showMessageDialog(this, "Evento atualizado com sucesso (via tabela).");
+                    // Atualizar a lista 'eventos' local para manter a consistência
+                    eventos.set(tabela.convertRowIndexToModel(linhaSelecionada), evento);
+                    // A tabela já deve refletir visualmente, mas uma atualização completa pode ser mais segura
+                    // atualizarTabelaView(); // Descomente se necessário
                 } else {
-                    JOptionPane.showMessageDialog(this, "Erro ao atualizar o evento: " + resultado);
-                    atualizarTabelaView(); // Reverter para os dados do banco em caso de erro
+                    JOptionPane.showMessageDialog(this, "Erro ao atualizar o evento (via tabela): " + resultado);
+                    atualizarTabelaView(); // Reverter para os dados do banco
                 }
-            } catch (NumberFormatException nfe) {
-                 JOptionPane.showMessageDialog(this, "Erro ao salvar alterações: ID inválido.");
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Erro ao salvar alterações: " + ex.getMessage());
+                JOptionPane.showMessageDialog(this, "Erro ao salvar alterações da tabela: " + ex.getMessage());
                 ex.printStackTrace();
+                atualizarTabelaView(); // Reverter em caso de erro de formato, etc.
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Nenhum evento selecionado para salvar ou linha inválida.");
+            JOptionPane.showMessageDialog(this, "Nenhum evento selecionado na tabela para salvar.");
         }
     }
-
-    // Método auxiliar para atualizar a tabela e o JScrollPane
-    private void atualizarTabelaView() {
-        eventos = dao.listarTodos();
-        String[] colunas = { "ID", "Título", "Local", "Data", "Detalhes" };
-        String[][] dados = new String[eventos.size()][5];
-
-        for (int i = 0; i < eventos.size(); i++) {
-            Evento e = eventos.get(i);
-            dados[i][0] = String.valueOf(e.getId());
-            dados[i][1] = e.getTitulo();
-            dados[i][2] = e.getLocal();
-            dados[i][3] = e.getData();
-            dados[i][4] = e.getDetalhes();
-        }
-        // Assumindo que a tabela usa DefaultTableModel ou você precisará adaptar
-        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tabela.getModel();
-        model.setDataVector(dados, colunas);
-    }
-
 
     private void abrirJanelaParticipantes() {
         int linhaSelecionada = tabela.getSelectedRow();
         if (linhaSelecionada >= 0) {
             try {
-                // Obter o ID do evento da linha selecionada
-                // Certifique-se de que a coluna 0 (ID) é convertida corretamente
-                int idEvento = Integer.parseInt(tabela.getValueAt(linhaSelecionada, 0).toString());
-                String tituloEvento = tabela.getValueAt(linhaSelecionada, 1).toString();
+                Evento eventoSelecionado = eventos.get(tabela.convertRowIndexToModel(linhaSelecionada));
+                int idEvento = eventoSelecionado.getId();
+                String tituloEvento = eventoSelecionado.getTitulo();
 
-                // Criar e exibir a nova janela de diálogo
-                // Supondo que ParticipantesEventoDialog existe no mesmo pacote 'screens'
                 ParticipantesEventoDialog dialogo = new ParticipantesEventoDialog(this, idEvento, tituloEvento);
                 dialogo.setVisible(true);
-
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "ID do evento inválido na linha selecionada.", "Erro", JOptionPane.ERROR_MESSAGE);
+            } catch (IndexOutOfBoundsException e) { // Segurança adicional
+                 JOptionPane.showMessageDialog(this, "Erro ao obter dados do evento selecionado.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Por favor, selecione um evento na tabela.", "Nenhum Evento Selecionado", JOptionPane.INFORMATION_MESSAGE);

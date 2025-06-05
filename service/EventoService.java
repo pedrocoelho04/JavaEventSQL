@@ -36,6 +36,10 @@ public class EventoService {
     return this.dao.inserir(titulo, local, data, detalhes);
   }
 
+  public String atualizar(Evento evento){
+    return this.dao.atualizar(evento);
+  }
+
   public String excluirPorId(int id) {
     return this.dao.excluirPorId(id);
   }

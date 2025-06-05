@@ -1,7 +1,6 @@
 package screens;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -83,7 +82,7 @@ public class HomeFrame extends JFrame {
 
         JButton btnCadastroEventos = createStyledButton("Cadastrar Evento");
         btnCadastroEventos.addActionListener(e -> {
-            new CadastroEventoFrame();
+            new CadastroEventoFrame(null);
         });
 
         buttonPanel.add(btnConsultaParticipantes);
