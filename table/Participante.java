@@ -9,12 +9,12 @@ public class Participante {
   private String ePalestrante;
   private String curriculo;
   private String areaAtuacao;
+  private String cpf;
 
   public Participante() {
   }
 
-  public Participante(Integer id, String nome, String sexo, String email, String celular, String ePalestrante,
-                      String curriculo, String areaAtuacao) {
+  public Participante(Integer id, String nome, String sexo, String email, String celular, String ePalestrante, String curriculo, String areaAtuacao, String cpf) {
     this.id = id;
     this.nome = nome;
     this.sexo = sexo;
@@ -23,6 +23,7 @@ public class Participante {
     this.ePalestrante = ePalestrante;
     this.curriculo = curriculo;
     this.areaAtuacao = areaAtuacao;
+    this.cpf = cpf;
   }
 
   public Integer getId() {
@@ -87,5 +88,13 @@ public class Participante {
 
   public void setAreaAtuacao(String areaAtuacao) {
     this.areaAtuacao = areaAtuacao;
+  }
+
+  public String getCpf() {
+    return cpf;
+  }
+
+  public void setCpf(String cpf) {
+      this.cpf = cpf;
   }
 }
