@@ -62,7 +62,7 @@ public class ParticipantesEventoDialog extends JDialog {
     JPanel painelInscritos = new JPanel(new BorderLayout(5, 5));
     painelInscritos.setBorder(new TitledBorder("Participantes Inscritos no Evento"));
 
-    String[] colunasInscritos = { "ID", "Nome", "Email", "Celular" };
+    String[] colunasInscritos = { "ID", "Nome", "Email", "Celular", "É Palestrante" };
     modelInscritos = new DefaultTableModel(colunasInscritos, 0) {
       @Override
       public boolean isCellEditable(int row, int column) {
@@ -87,7 +87,7 @@ public class ParticipantesEventoDialog extends JDialog {
     JPanel painelBusca = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5)); // Adicionado espaçamento
     painelBusca.add(new JLabel("Buscar por:"));
 
-    String[] criterios = { "Todos", "ID", "Nome", "Email", "Celular" };
+    String[] criterios = { "Todos", "ID", "Nome", "Email", "Celular", "É Palestrante" };
     comboBoxCriterioBusca = new JComboBox<>(criterios);
     painelBusca.add(comboBoxCriterioBusca);
 
@@ -113,7 +113,7 @@ public class ParticipantesEventoDialog extends JDialog {
     painelBusca.add(botaoBuscarOutros);
     painelOutros.add(painelBusca, BorderLayout.NORTH);
 
-    String[] colunasOutros = { "ID", "Nome", "Email", "Celular" };
+    String[] colunasOutros = { "ID", "Nome", "Email", "Celular", "É Palestrante" };
     modelOutros = new DefaultTableModel(colunasOutros, 0) {
       @Override
       public boolean isCellEditable(int row, int column) {
@@ -165,7 +165,7 @@ public class ParticipantesEventoDialog extends JDialog {
 
         if (p != null && p.getId() != null) {
           modelInscritos.addRow(new Object[] {
-              p.getId(), p.getNome(), p.getEmail(), p.getCelular()
+              p.getId(), p.getNome(), p.getEmail(), p.getCelular(), "S".equals(p.getePalestrante()) ? "Sim" : "Não"
           });
         }
       }
@@ -248,7 +248,7 @@ public class ParticipantesEventoDialog extends JDialog {
       for (Participante p : resultadoFiltragem) {
         if (p.getId() != null && !idsInscritos.contains(p.getId())) {
           modelOutros.addRow(new Object[] {
-              p.getId(), p.getNome(), p.getEmail(), p.getCelular()
+              p.getId(), p.getNome(), p.getEmail(), p.getCelular(), "S".equals(p.getePalestrante()) ? "Sim" : "Não"
           });
         }
       }

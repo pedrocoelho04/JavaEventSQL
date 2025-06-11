@@ -20,11 +20,18 @@ public class ParticipanteDao {
 
   public List<Participante> listarTodos() {
     try {
-      List<Participante> lista = new ArrayList<Participante>();
-      String sql = "SELECT * FROM participante";
+      List<Participante> lista = new ArrayList<>();
+      // Query atualizada com LEFT JOIN e GROUP_CONCAT
+      String sql = "SELECT p.*, GROUP_CONCAT(e.titulo, ', ') AS eventos " +
+                   "FROM participante p " +
+                   "LEFT JOIN evento_participante ep ON p.id = ep.id_participante " +
+                   "LEFT JOIN evento e ON ep.id_evento = e.id " +
+                   "GROUP BY p.id";
+
       Connection conn = this.sqlConn.connect();
       Statement stm = conn.createStatement();
       ResultSet rs = stm.executeQuery(sql);
+
       while (rs.next()) {
         Participante participante = new Participante(
           rs.getInt("id"),
@@ -37,6 +44,8 @@ public class ParticipanteDao {
           rs.getString("areaAtuacao"),
           rs.getString("cpf")
         );
+        // Popula o novo campo com a lista de eventos
+        participante.setEventosInscritos(rs.getString("eventos"));
         lista.add(participante);
       }
       rs.close();
@@ -44,9 +53,9 @@ public class ParticipanteDao {
       this.sqlConn.close(conn);
       return lista;
     } catch (SQLException e) {
-      System.err.println("Erro no método listarTodos() da classe ParticipanteDao ao executar SELECT: " + e.getMessage());
+      System.err.println("Erro no método listarTodos() da classe ParticipanteDao: " + e.getMessage());
       e.printStackTrace();
-      return new ArrayList<Participante>();
+      return new ArrayList<>();
     }
   }
 

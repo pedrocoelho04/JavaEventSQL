@@ -10,6 +10,7 @@ public class Participante {
   private String curriculo;
   private String areaAtuacao;
   private String cpf;
+  private String eventosInscritos;
 
   public Participante() {
   }
@@ -96,5 +97,13 @@ public class Participante {
 
   public void setCpf(String cpf) {
       this.cpf = cpf;
+  }
+
+  public String getEventosInscritos() {
+    return eventosInscritos;
+  }
+
+  public void setEventosInscritos(String eventosInscritos) {
+    this.eventosInscritos = eventosInscritos;
   }
 }

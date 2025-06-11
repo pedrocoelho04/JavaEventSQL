@@ -56,8 +56,8 @@ public class ConsultaParticipanteFrame extends JFrame {
   private void atualizarTabela() {
     participantes = dao.listarTodos();
     String[] colunas = { "ID", "Nome", "Sexo", "Email", "CPF", "Celular", "É Palestrante", "Currículo",
-        "Área de Atuação" };
-    String[][] dados = new String[participantes.size()][9];
+        "Área de Atuação", "Eventos Inscritos" };
+    String[][] dados = new String[participantes.size()][10];
 
     for (int i = 0; i < participantes.size(); i++) {
       Participante p = participantes.get(i);
@@ -67,9 +67,10 @@ public class ConsultaParticipanteFrame extends JFrame {
       dados[i][3] = p.getEmail();
       dados[i][4] = formatarCpfParaExibicao(p.getCpf());
       dados[i][5] = p.getCelular();
-      dados[i][6] = p.getePalestrante();
+      dados[i][6] = "S".equals(p.getePalestrante()) ? "Sim" : "Não";
       dados[i][7] = p.getCurriculo() != null ? p.getCurriculo() : "N/A";
       dados[i][8] = p.getAreaAtuacao() != null ? p.getAreaAtuacao() : "N/A";
+      dados[i][9] = p.getEventosInscritos() != null ? p.getEventosInscritos() : "Nenhum";
     }
 
     tabela = new JTable(dados, colunas);
