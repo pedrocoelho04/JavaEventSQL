@@ -79,8 +79,7 @@ Tela para visualizar e consultar eventos cadastrados.
 - [Consultar Eventos]()
 - [Cadastrar Eventos]()
 
-> [!CAUTION]
-> Essas opções possuem ligações diretas a manipulação ao banco de dados
+> Essas opções possuem ligações diretas a manipulação ao banco de dados.
 
 <img src="./guide/imgs/menu.png">
 
