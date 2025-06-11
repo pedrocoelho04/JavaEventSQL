@@ -50,7 +50,6 @@ class EventoParticipanteServiceTest {
     @Test
     @DisplayName("Deve buscar uma inscrição pelo seu ID")
     void deveBuscarInscricaoPorId() {
-        // Arrange
         int idBusca = 50;
         EventoParticipante inscricaoMock = new EventoParticipante();
         inscricaoMock.setId(idBusca);
@@ -59,10 +58,8 @@ class EventoParticipanteServiceTest {
 
         when(daoMock.buscarPorId(idBusca)).thenReturn(inscricaoMock);
 
-        // Act
         EventoParticipante resultado = eventoParticipanteService.buscarPorId(idBusca);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(idBusca, resultado.getId());
         assertEquals(10, resultado.getEventId());
@@ -72,17 +69,14 @@ class EventoParticipanteServiceTest {
     @Test
     @DisplayName("Deve inserir uma nova inscrição (relação evento-participante)")
     void deveInserirNovaInscricao() {
-        // Arrange
         Integer idEvento = 15;
         Integer idParticipante = 25;
         String mensagemEsperada = "Inscrição realizada com sucesso.";
 
         when(daoMock.inserir(idEvento, idParticipante)).thenReturn(mensagemEsperada);
 
-        // Act
         String resultado = eventoParticipanteService.inserir(idEvento, idParticipante);
 
-        // Assert
         assertEquals(mensagemEsperada, resultado);
         verify(daoMock).inserir(idEvento, idParticipante);
     }
@@ -90,7 +84,6 @@ class EventoParticipanteServiceTest {
     @Test
     @DisplayName("Deve buscar uma inscrição pelo ID do participante")
     void deveBuscarInscricaoPorIdParticipante() {
-        // Arrange
         Integer idParticipanteBusca = 77;
         EventoParticipante inscricaoMock = new EventoParticipante();
         inscricaoMock.setId(5);
@@ -99,10 +92,8 @@ class EventoParticipanteServiceTest {
 
         when(daoMock.buscarPorIdParticipante(idParticipanteBusca)).thenReturn(inscricaoMock);
 
-        // Act
         EventoParticipante resultado = eventoParticipanteService.buscarPorIdParticipante(idParticipanteBusca);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(idParticipanteBusca, resultado.getParticipanteId());
         verify(daoMock).buscarPorIdParticipante(idParticipanteBusca);
@@ -111,14 +102,11 @@ class EventoParticipanteServiceTest {
     @Test
     @DisplayName("Deve retornar nulo ao buscar por um ID de inscrição inexistente")
     void deveRetornarNuloParaIdInexistente() {
-        // Arrange
         int idInexistente = 999;
         when(daoMock.buscarPorId(idInexistente)).thenReturn(null);
         
-        // Act
         EventoParticipante resultado = eventoParticipanteService.buscarPorId(idInexistente);
         
-        // Assert
         assertNull(resultado);
         verify(daoMock).buscarPorId(idInexistente);
     }

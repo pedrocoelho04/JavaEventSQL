@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class) // Habilita a integração do Mockito com o JUnit 5
+@ExtendWith(MockitoExtension.class)
 class ParticipanteServiceTest {
 
     @Mock // Cria um mock (objeto falso) do ParticipanteDao
@@ -51,7 +51,6 @@ class ParticipanteServiceTest {
     @Test
     @DisplayName("Deve retornar um participante específico ao buscar por ID")
     void deveBuscarParticipantePorId() {
-        // Arrange
         int idParaBuscar = 10;
         Participante participanteMock = new Participante();
         participanteMock.setId(idParaBuscar);
@@ -60,10 +59,8 @@ class ParticipanteServiceTest {
 
         when(daoMock.buscarPorId(idParaBuscar)).thenReturn(participanteMock);
 
-        // Act
         Participante resultado = participanteService.buscarPorId(idParaBuscar);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(idParaBuscar, resultado.getId());
         assertEquals("Carlos", resultado.getNome());
@@ -73,14 +70,11 @@ class ParticipanteServiceTest {
     @Test
     @DisplayName("Deve retornar nulo quando buscar por um ID que não existe")
     void deveRetornarNuloQuandoIdNaoExiste() {
-        // Arrange
         int idInexistente = 99;
         when(daoMock.buscarPorId(idInexistente)).thenReturn(null);
         
-        // Act
         Participante resultado = participanteService.buscarPorId(idInexistente);
         
-        // Assert
         assertNull(resultado);
         verify(daoMock).buscarPorId(idInexistente);
     }
@@ -88,33 +82,26 @@ class ParticipanteServiceTest {
     @Test
     @DisplayName("Deve chamar o método de inserção do DAO e retornar a mensagem de sucesso")
     void deveInserirNovoParticipante() {
-        // Arrange
         String mensagemEsperada = "Participante inserido com sucesso.";
         when(daoMock.inserir(anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString()))
                 .thenReturn(mensagemEsperada);
 
-        // Act
         String resultado = participanteService.inserir("José", "M", "jose@email.com", "999998888", "12345678900", "false", "", "");
 
-        // Assert
         assertEquals(mensagemEsperada, resultado);
         
-        // Verifica se o DAO foi chamado com os parâmetros corretos
         verify(daoMock).inserir("José", "M", "jose@email.com", "999998888", "12345678900", "false", "", "");
     }
 
     @Test
     @DisplayName("Deve chamar o método de exclusão do DAO ao excluir por ID")
     void deveExcluirParticipantePorId() {
-        // Arrange
         int idParaExcluir = 5;
         String mensagemEsperada = "Excluído com sucesso.";
         when(daoMock.excluirPorId(idParaExcluir)).thenReturn(mensagemEsperada);
 
-        // Act
         String resultado = participanteService.excluirPorId(idParaExcluir);
 
-        // Assert
         assertEquals(mensagemEsperada, resultado);
         verify(daoMock, times(1)).excluirPorId(idParaExcluir);
     }

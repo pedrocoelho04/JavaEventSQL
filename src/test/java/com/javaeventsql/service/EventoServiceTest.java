@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class) // Habilita a integração do Mockito com JUnit 5
+@ExtendWith(MockitoExtension.class) 
 class EventoServiceTest {
 
     @Mock // Cria uma instância "falsa" (mock) do EventoDao
@@ -49,7 +49,6 @@ class EventoServiceTest {
     @Test
     @DisplayName("Deve retornar um evento específico ao buscar por ID")
     void deveBuscarEventoPorId() {
-        // Arrange
         int idParaBuscar = 42;
         Evento eventoMock = new Evento();
         eventoMock.setId(idParaBuscar);
@@ -58,10 +57,8 @@ class EventoServiceTest {
 
         when(daoMock.buscarPorId(idParaBuscar)).thenReturn(eventoMock);
 
-        // Act
         Evento resultado = eventoService.buscarPorId(idParaBuscar);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(idParaBuscar, resultado.getId());
         assertEquals("Workshop de Testes", resultado.getTitulo());
@@ -71,14 +68,11 @@ class EventoServiceTest {
     @Test
     @DisplayName("Deve retornar nulo quando buscar um ID de evento que não existe")
     void deveRetornarNuloAoBuscarIdInexistente() {
-        // Arrange
         int idInexistente = 999;
         when(daoMock.buscarPorId(idInexistente)).thenReturn(null);
         
-        // Act
         Evento resultado = eventoService.buscarPorId(idInexistente);
         
-        // Assert
         assertNull(resultado);
         verify(daoMock).buscarPorId(idInexistente);
     }
@@ -86,7 +80,6 @@ class EventoServiceTest {
     @Test
     @DisplayName("Deve inserir um novo evento e retornar a mensagem de sucesso")
     void deveInserirNovoEvento() {
-        // Arrange
         String mensagemEsperada = "Evento inserido com sucesso.";
         String titulo = "Meetup de IA";
         String local = "Auditório Principal";
@@ -96,10 +89,8 @@ class EventoServiceTest {
         // anyString() pode ser usado se os parâmetros exatos não importarem para o mock
         when(daoMock.inserir(titulo, local, data, detalhes)).thenReturn(mensagemEsperada);
 
-        // Act
         String resultado = eventoService.inserir(titulo, local, data, detalhes);
 
-        // Assert
         assertEquals(mensagemEsperada, resultado);
         verify(daoMock).inserir(titulo, local, data, detalhes); // Verifica se o DAO foi chamado com os parâmetros corretos
     }
@@ -107,15 +98,12 @@ class EventoServiceTest {
     @Test
     @DisplayName("Deve excluir um evento por ID e retornar a mensagem de sucesso")
     void deveExcluirEventoPorId() {
-        // Arrange
         int idParaExcluir = 7;
         String mensagemEsperada = "Evento excluído com sucesso.";
         when(daoMock.excluirPorId(idParaExcluir)).thenReturn(mensagemEsperada);
 
-        // Act
         String resultado = eventoService.excluirPorId(idParaExcluir);
 
-        // Assert
         assertEquals(mensagemEsperada, resultado);
         verify(daoMock, times(1)).excluirPorId(idParaExcluir); // Verifica se o método foi chamado exatamente uma vez
     }
@@ -123,18 +111,15 @@ class EventoServiceTest {
     @Test
     @DisplayName("Deve atualizar um evento e retornar a mensagem de sucesso")
     void deveAtualizarUmEvento() {
-        // Arrange
         Evento eventoParaAtualizar = new Evento();
         eventoParaAtualizar.setId(10);
         eventoParaAtualizar.setTitulo("Título Atualizado");
         
         String mensagemEsperada = "Evento atualizado com sucesso.";
         when(daoMock.atualizar(eventoParaAtualizar)).thenReturn(mensagemEsperada);
-        
-        // Act
+    
         String resultado = eventoService.atualizar(eventoParaAtualizar);
         
-        // Assert
         assertEquals(mensagemEsperada, resultado);
         verify(daoMock).atualizar(eventoParaAtualizar);
     }
