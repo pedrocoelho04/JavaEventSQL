@@ -113,7 +113,7 @@ public class ConsultaParticipanteFrame extends JFrame {
 
     // --- Criação da Janela de Edição ---
     JFrame editarFrame = new JFrame("Editar Participante");
-    editarFrame.setSize(450, 450);
+    editarFrame.setSize(450, 500); // Aumentei um pouco a altura para acomodar melhor os campos
     editarFrame.setLocationRelativeTo(this);
     editarFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -121,11 +121,30 @@ public class ConsultaParticipanteFrame extends JFrame {
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.insets = new Insets(5, 5, 5, 5);
     gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.anchor = GridBagConstraints.WEST; // Alinhar componentes à esquerda
 
     // --- Campos do Formulário ---
     JTextField nomeField = new JTextField(p.getNome());
-    JTextField sexoField = new JTextField(p.getSexo());
+    // Removido: JTextField sexoField = new JTextField(p.getSexo());
     JTextField emailField = new JTextField(p.getEmail());
+
+    // --- Campo de Sexo com Radio Buttons ---
+    JRadioButton femininoRadioButton = new JRadioButton("Feminino");
+    JRadioButton masculinoRadioButton = new JRadioButton("Masculino");
+    ButtonGroup sexoButtonGroup = new ButtonGroup();
+    sexoButtonGroup.add(femininoRadioButton);
+    sexoButtonGroup.add(masculinoRadioButton);
+
+    // Pré-seleciona o sexo do participante
+    if ("F".equals(p.getSexo())) {
+      femininoRadioButton.setSelected(true);
+    } else if ("M".equals(p.getSexo())) {
+      masculinoRadioButton.setSelected(true);
+    }
+
+    JPanel sexoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    sexoPanel.add(femininoRadioButton);
+    sexoPanel.add(masculinoRadioButton);
 
     // Campo de Celular com Máscara
     JFormattedTextField celularField = null;
@@ -138,7 +157,7 @@ public class ConsultaParticipanteFrame extends JFrame {
       celularField = new JFormattedTextField(); // Fallback
     }
 
-    // --- CAMPO DE CPF COM MÁSCARA ---
+    // CAMPO DE CPF COM MÁSCARA
     JFormattedTextField cpfField = null;
     try {
       MaskFormatter cpfFormatter = new MaskFormatter("###.###.###-##");
@@ -160,10 +179,18 @@ public class ConsultaParticipanteFrame extends JFrame {
     salvarButton.addActionListener(e -> {
       // Obter dados dos campos
       String nome = nomeField.getText().trim();
-      String sexo = sexoField.getText().trim().toUpperCase();
       String email = emailField.getText().trim();
       String cpf = (String) finalCpfField.getValue();
       String celular = (String) finalCelularField.getValue();
+
+      // Obter sexo dos Radio Buttons
+      String sexo = "";
+      if (femininoRadioButton.isSelected()) {
+        sexo = "F";
+      } else if (masculinoRadioButton.isSelected()) {
+        sexo = "M";
+      }
+
       String ePalestrante = ePalestranteBox.isSelected() ? "S" : "N";
       String curriculo = curriculoArea.getText().trim();
       String areaAtuacao = areaAtuacaoArea.getText().trim();
@@ -174,7 +201,7 @@ public class ConsultaParticipanteFrame extends JFrame {
         return;
       }
 
-      // --- VALIDAÇÃO DO CPF ---
+      // VALIDAÇÃO DO CPF
       if (!isCPFValido(cpf)) {
         JOptionPane.showMessageDialog(editarFrame, "O CPF inserido é inválido!", "CPF Inválido",
             JOptionPane.ERROR_MESSAGE);
@@ -183,8 +210,6 @@ public class ConsultaParticipanteFrame extends JFrame {
       }
 
       // Atualizando no banco de dados
-      // Note que o CPF e Celular já estão sem máscara por causa do
-      // JFormattedTextField
       String resultado = dao.atualizarPorId(id, nome, sexo, email, cpf, celular, ePalestrante, curriculo, areaAtuacao);
 
       if ("sucesso".equalsIgnoreCase(resultado)) {
@@ -200,68 +225,81 @@ public class ConsultaParticipanteFrame extends JFrame {
 
     // --- Montagem do Painel ---
     int linhaGbc = 0;
+    gbc.weightx = 0.1; // Peso para o label
     gbc.gridx = 0;
     gbc.gridy = linhaGbc;
     panel.add(new JLabel("Nome:"), gbc);
+
+    gbc.weightx = 0.9; // Peso para o campo
     gbc.gridx = 1;
-    gbc.gridy = linhaGbc++;
     panel.add(nomeField, gbc);
+    linhaGbc++;
 
     gbc.gridx = 0;
     gbc.gridy = linhaGbc;
     panel.add(new JLabel("CPF:"), gbc);
     gbc.gridx = 1;
-    gbc.gridy = linhaGbc++;
     panel.add(cpfField, gbc);
+    linhaGbc++;
 
+    // Adicionando o painel de sexo
     gbc.gridx = 0;
     gbc.gridy = linhaGbc;
-    panel.add(new JLabel("Sexo (F/M):"), gbc);
+    panel.add(new JLabel("Sexo:"), gbc);
     gbc.gridx = 1;
-    gbc.gridy = linhaGbc++;
-    panel.add(sexoField, gbc);
+    panel.add(sexoPanel, gbc);
+    linhaGbc++;
 
     gbc.gridx = 0;
     gbc.gridy = linhaGbc;
     panel.add(new JLabel("E-mail:"), gbc);
     gbc.gridx = 1;
-    gbc.gridy = linhaGbc++;
     panel.add(emailField, gbc);
+    linhaGbc++;
 
     gbc.gridx = 0;
     gbc.gridy = linhaGbc;
     panel.add(new JLabel("Celular:"), gbc);
     gbc.gridx = 1;
-    gbc.gridy = linhaGbc++;
     panel.add(celularField, gbc);
+    linhaGbc++;
 
     gbc.gridx = 0;
-    gbc.gridy = linhaGbc++;
+    gbc.gridy = linhaGbc;
     gbc.gridwidth = 2;
+    gbc.anchor = GridBagConstraints.WEST; // Alinhar checkbox à esquerda
     panel.add(ePalestranteBox, gbc);
+    linhaGbc++;
+    gbc.gridwidth = 1; // Reset gridwidth
 
-    gbc.gridwidth = 1;
     gbc.gridx = 0;
     gbc.gridy = linhaGbc;
     panel.add(new JLabel("Currículo:"), gbc);
     gbc.gridx = 1;
-    gbc.gridy = linhaGbc++;
     panel.add(new JScrollPane(curriculoArea), gbc);
+    linhaGbc++;
 
     gbc.gridx = 0;
     gbc.gridy = linhaGbc;
     panel.add(new JLabel("Área de Atuação:"), gbc);
     gbc.gridx = 1;
-    gbc.gridy = linhaGbc++;
     panel.add(new JScrollPane(areaAtuacaoArea), gbc);
+    linhaGbc++;
+
+    // Adiciona um "espaçador" para empurrar o botão para baixo
+    gbc.gridy = linhaGbc++;
+    gbc.weighty = 1.0;
+    panel.add(new JLabel(""), gbc);
+    gbc.weighty = 0.0;
 
     gbc.gridx = 0;
     gbc.gridy = linhaGbc;
     gbc.gridwidth = 2;
-    gbc.anchor = GridBagConstraints.CENTER;
+    gbc.fill = GridBagConstraints.NONE; // Para não esticar o botão
+    gbc.anchor = GridBagConstraints.CENTER; // Centraliza o botão
     panel.add(salvarButton, gbc);
 
-    editarFrame.add(panel);
+    editarFrame.add(new JScrollPane(panel)); // Adiciona um scrollpane para caso a janela fique pequena
     editarFrame.setVisible(true);
   }
 
