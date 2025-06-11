@@ -2,7 +2,7 @@
 
 Este sistema permite gerenciar **participantes** e **eventos** de forma simples, utilizando Java com Swing e SQLite.
 <details>
-<summary style="font-size: 20px; cursor: pointer"><strong>📄 Guia Rápido <spam style="font-size: 12px; font-color: red">Decapreted</spam></strong></summary>
+<summary style="font-size: 20px; cursor: pointer"><strong>📄 Guia Rápido: <spam style="font-size: 10px; font-color: red">Deprecated</spam></strong></summary>
 
 ## 🎯 Funcionalidades
 
